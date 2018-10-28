@@ -1,6 +1,9 @@
 import React from "react";
 import axios from "axios";
 import { changeUserName, changePassword, initializeForm } from "../actions";
+import Input from "@material-ui/core/Input";
+import Button from "@material-ui/core/Button";
+import InputLabel from "@material-ui/core/InputLabel";
 
 const AddForm = ({ store }) => {
   const { userName, password } = store.getState().form;
@@ -23,23 +26,23 @@ const AddForm = ({ store }) => {
   return (
     <div>
       <form onSubmit={e => handleSubmit(e)}>
-        <label>
+        <InputLabel>
           User Name:
-          <input
+          <Input
             value={userName}
             onChange={e => store.dispatch(changeUserName(e.target.value))}
           />
-        </label>
-        <label>
+        </InputLabel>
+        <InputLabel>
           Password:
-          <input
+          <Input
             value={password}
             type="password"
             name="password"
             onChange={e => store.dispatch(changePassword(e.target.value))}
           />
-        </label>
-        <button type="submit">submit</button>
+        </InputLabel>
+        <Button type="submit">submit</Button>
       </form>
     </div>
   );
