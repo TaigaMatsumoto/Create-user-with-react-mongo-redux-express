@@ -19,6 +19,25 @@ const UserList = ({ store }) => {
         store.dispatch(receiveDataFailed());
       });
   };
+
+  const handleUpdateUser = id => {
+    let newPassword = document.getElementById(id).value;
+
+    store.dispatch(requestData());
+    axios
+      .put("/api/users", {
+        id,
+        newPassword
+      })
+      .then(response => {
+        const _userArray = response.data;
+        store.dispatch(receiveDataSuccess(_userArray));
+      })
+      .catch(err => {
+        console.error(new Error(err));
+        store.dispatch(receiveDataFailed());
+      });
+  };
   return (
     <div>
       {isFetching ? (
@@ -30,8 +49,11 @@ const UserList = ({ store }) => {
           <ul>
             {userArray.map(user => (
               <li key={user._id}>
-                {`user name:${user.userName}, password: ${user.password} `}@{" "}
-                <UpdateUserPassword id={user._id} store={store} />
+                {`user name:${user.userName}, password: ${user.password} `}{" "}
+                <input id={user._id} />
+                <button onClick={() => handleUpdateUser(user._id)}>
+                  update password
+                </button>
               </li>
             ))}
           </ul>

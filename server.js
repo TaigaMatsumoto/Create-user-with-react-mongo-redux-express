@@ -22,10 +22,17 @@ mongoose.connect(
         else res.status(200).send(userArray);
       });
     });
-    app.put('/api/users', (req, res) => {
-      const {id} = req.body;
-
-      User.findByIdAndUpdate(id, {$set: {password: }})
+    app.put("/api/users", (req, res) => {
+      const { id, newPassword } = req.body;
+      User.findByIdAndUpdate(id, { $set: { password: newPassword } }, err => {
+        if (err) Response.status(500).send();
+        else {
+          User.find({}, (findErr, userArray) => {
+            if (findErr) res.status(500).send();
+            else res.status(200).send(userArray);
+          });
+        }
+      });
     });
     app.post("/api/users", (req, res) => {
       const { userName, password } = req.body;
@@ -49,5 +56,3 @@ mongoose.connect(
 );
 
 // app.delete([url], (req, res) => {});
-
-
